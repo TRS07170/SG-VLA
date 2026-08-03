@@ -1,0 +1,14 @@
+# Generated previews and local tooling
+.DS_Store
+Thumbs.db
+tmp/
+.tmp/
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+
+# Local servers and package installs
+node_modules/
+*.log

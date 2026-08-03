@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SG-VLA: Learning Spatially-Grounded Vision-Language-Action Models for Mobile Manipulation</title>
+  <meta name="description" content="SG-VLA learns spatially grounded representations for mobile manipulation with multi-view RGB-depth perception and progressive auxiliary-task co-training.">
+  <meta name="author" content="Ruisen Tu, Arth Shukla, Sohyun Yoo, Xuanlin Li, Junxi Li, Jianwen Xie, Hao Su, and Zhuowen Tu">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SG-VLA: Spatially-Grounded VLA Models for Mobile Manipulation">
+  <meta property="og:description" content="A 1.3B-parameter VLA model that reaches 73% average success on ManiSkill-HAB household tasks.">
+  <meta property="og:image" content="static/images/og-image.jpg">
+  <meta property="og:image:alt" content="SG-VLA project overview and a representative mobile-manipulation rollout">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SG-VLA: Spatially-Grounded VLA Models for Mobile Manipulation">
+  <meta name="twitter:description" content="Multi-view RGB-depth perception and progressive auxiliary-task co-training for household mobile manipulation.">
+  <meta name="twitter:image" content="static/images/og-image.jpg">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="static/css/index.css?v=20260802r">
+  <script defer src="static/js/index.js?v=20260801"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "name": "SG-VLA: Learning Spatially-Grounded Vision-Language-Action Models for Mobile Manipulation",
+    "url": "https://arxiv.org/abs/2603.22760",
+    "datePublished": "2026",
+    "author": [
+      {"@type":"Person","name":"Ruisen Tu","url":"https://trs07170.github.io/"},
+      {"@type":"Person","name":"Arth Shukla"},
+      {"@type":"Person","name":"Sohyun Yoo"},
+      {"@type":"Person","name":"Xuanlin Li"},
+      {"@type":"Person","name":"Junxi Li"},
+      {"@type":"Person","name":"Jianwen Xie"},
+      {"@type":"Person","name":"Hao Su"},
+      {"@type":"Person","name":"Zhuowen Tu"}
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="publication-header hero" aria-labelledby="page-title">
+    <div class="hero-body content-container">
+      <h1 id="page-title" class="publication-title title">
+        <span class="project-name">SG-VLA:</span>
+        Learning Spatially-Grounded Vision-Language-Action Models for Mobile Manipulation
+      </h1>
+
+      <div class="publication-authors" aria-label="Authors">
+        <span class="author-block"><a href="https://trs07170.github.io/" target="_blank" rel="noopener noreferrer">Ruisen Tu</a><sup>1</sup></span>,
+        <span class="author-block"><a href="https://arth.website/" target="_blank" rel="noopener noreferrer">Arth Shukla</a><sup>1</sup></span>,
+        <span class="author-block"><a href="https://www.linkedin.com/in/sohyun-yoo/" target="_blank" rel="noopener noreferrer">Sohyun Yoo</a><sup>1</sup></span>,
+        <span class="author-block"><a href="https://xuanlinli17.github.io/" target="_blank" rel="noopener noreferrer">Xuanlin Li</a><sup>1</sup></span>,
+        <span class="author-block">Junxi Li<sup>1</sup></span>,
+        <span class="author-block">Jianwen Xie<sup>2</sup></span>,
+        <span class="author-block">Hao Su<sup>1</sup></span>, and
+        <span class="author-block"><a href="https://pages.ucsd.edu/~ztu/" target="_blank" rel="noopener noreferrer">Zhuowen Tu</a><sup>1</sup></span>
+      </div>
+
+      <p class="publication-affiliations">
+        <span><sup>1</sup>UC San Diego</span>
+        <span><sup>2</sup>Lambda, Inc.</span>
+      </p>
+      <nav class="publication-links" aria-label="Publication links">
+        <a class="link-block button is-dark is-rounded" href="https://arxiv.org/pdf/2603.22760" target="_blank" rel="noopener noreferrer">
+          <span aria-hidden="true">📄</span>
+          <span>Paper</span>
+        </a>
+  <a class="link-block button is-dark is-rounded" href="https://arxiv.org/abs/2603.22760" target="_blank" rel="noopener noreferrer">
+    <span class="icon" aria-hidden="true"><i class="ai ai-arxiv"></i></span>
+    <span>arXiv</span>
+  </a>
+        <span class="link-block button is-dark is-rounded is-disabled" aria-disabled="true" title="Code will be released soon">
+          <span aria-hidden="true">&lt;/&gt;</span>
+          <span>Code (Coming Soon)</span>
+        </span>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="site-section section section--muted teaser" aria-labelledby="teaser-title">
+      <div class="media-container">
+        <h2 id="teaser-title" class="visually-hidden">SG-VLA in action</h2>
+        <div class="teaser-grid" aria-label="Featured simulation rollouts">
+          <figure class="video-card">
+            <video muted loop playsinline controls preload="metadata" poster="static/images/video-posters/pick.webp" data-autoplay aria-label="SG-VLA picking an object in simulation">
+              <source src="static/videos/pick.mp4" type="video/mp4">
+            </video>
+            <figcaption>Pick</figcaption>
+          </figure>
+          <figure class="video-card">
+            <video muted loop playsinline controls preload="metadata" poster="static/images/video-posters/place.webp" data-autoplay aria-label="SG-VLA placing an object in simulation">
+              <source src="static/videos/place.mp4" type="video/mp4">
+            </video>
+            <figcaption>Place</figcaption>
+          </figure>
+          <figure class="video-card">
+            <video muted loop playsinline controls preload="metadata" poster="static/images/video-posters/open-fridge.webp" data-autoplay aria-label="SG-VLA opening a refrigerator in simulation">
+              <source src="static/videos/open-fridge.mp4" type="video/mp4">
+            </video>
+            <figcaption>Open Fridge</figcaption>
+          </figure>
+          <figure class="video-card">
+            <video muted loop playsinline controls preload="metadata" poster="static/images/video-posters/close-fridge.webp" data-autoplay aria-label="SG-VLA closing a refrigerator in simulation">
+              <source src="static/videos/close-fridge.mp4" type="video/mp4">
+            </video>
+            <figcaption>Close Fridge</figcaption>
+          </figure>
+        </div>
+        <p class="teaser-copy">
+          <strong>SG-VLA learns spatially grounded representations for mobile manipulation</strong> through multi-view RGB-depth perception and progressive auxiliary-task co-training. It improves average success from <strong>60%</strong> to <strong>73%</strong> on ManiSkill-HAB household tasks.
+        </p>
+        <div class="stat-grid teaser-stats" aria-label="Project statistics">
+          <div class="stat-item"><strong>1.3B</strong><span>parameters</span></div>
+          <div class="stat-item"><strong>44K / 1.4M</strong><span>episodes / transitions</span></div>
+          <div class="stat-item"><strong>73%</strong><span>average success, up from 60%</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section section overview-section" aria-labelledby="abstract-title">
+      <div class="content-container">
+        <h2 id="abstract-title" class="section-title">Abstract</h2>
+        <div class="prose">
+          <p>
+            Vision-language-action models have shown strong semantic understanding in tabletop settings, but household mobile manipulation is harder: a robot must reason jointly about scene layout, object geometry, its own configuration, and coordinated base, arm, torso, and gripper motion. Direct imitation learning supplies only a sparse action-prediction signal for this demanding 13-dimensional control problem.
+          </p>
+          <p>
+            SG-VLA addresses this gap by enriching both what the model observes and what it learns to reconstruct. The model combines head- and hand-camera RGB observations with depth, then co-trains auxiliary decoders for global robot position, grasp state, joint configuration, target-object pose, and target-object segmentation. These dense objectives encourage the shared visual-language representation to encode spatial and manipulation-relevant structure. A progressive training schedule first adapts randomly initialized decoders without letting their auxiliary gradients disrupt the backbone, then jointly refines the full model.
+          </p>
+          <!-- <p>
+            On ManiSkill-HAB home-rearrangement tasks, SG-VLA improves average success from 60% with direct imitation learning to 73%, with gains across picking, placing, opening, and closing operations.
+          </p> -->
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section section section--muted" aria-labelledby="method-title">
+      <div class="media-container">
+        <h2 id="method-title" class="section-title">SG-VLA Architecture</h2>
+        <figure class="figure-panel figure-panel--bare">
+          <picture>
+            <source srcset="static/images/framework.webp" type="image/webp">
+            <img src="static/images/framework.png" width="2422" height="929" loading="lazy" alt="SG-VLA architecture: multi-view RGB-depth observations, language, and previous actions pass through a Prismatic visual-language backbone to auxiliary decoders and discrete or flow-matching action prediction.">
+          </picture>
+        </figure>
+
+        <div class="feature-grid">
+          <article class="feature-card">
+            <h3>Spatially rich perception</h3>
+            <p>Head and hand RGB views provide complementary global and local perspectives, while paired depth maps expose geometry explicitly. We also evaluate temporal context from the four previous actions; the strongest configuration uses multi-view RGB and depth without history.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Auxiliary spatial supervision</h3>
+            <p>Five decoders reconstruct global position <span class="nowrap">[x, y, z]</span>, grasp state, 12-dimensional joint configuration, 7-dimensional target-object pose, and target-object segmentation from shared VLM features.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Flexible action generation</h3>
+            <p>The Qwen2.5-0.5B-based model can predict discrete action tokens or use an optional flow-matching expert for continuous actions. Each 13D action controls a 3D base-pose delta, torso height, seven arm joints, and two gripper dimensions.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section section training-section" aria-labelledby="training-title">
+      <div class="media-container">
+        <h2 id="training-title" class="section-title">Progressive Training</h2>
+        <figure class="figure-panel figure-panel--bare">
+          <picture>
+            <source srcset="static/images/training.webp" type="image/webp">
+            <img src="static/images/training.png" width="2005" height="682" loading="lazy" alt="Three-stage SG-VLA training scheme: decoder adaptation with blocked auxiliary gradients, joint refinement with full gradient flow, and isolated flow-matching action-head training with a frozen VLM.">
+          </picture>
+        </figure>
+
+        <ol class="training-steps feature-grid">
+          <li class="feature-card">
+            <h3><span>Stage 1</span> Decoder adaptation</h3>
+            <p>Auxiliary gradients are blocked from entering the VLM backbone while the discrete action-token path continues to update it. The decoders learn to interpret established VLM features without disrupting them.</p>
+          </li>
+          <li class="feature-card">
+            <h3><span>Stage 2</span> Joint refinement</h3>
+            <p>Full auxiliary gradient flow is enabled. Action prediction and auxiliary objectives jointly refine the backbone toward spatially grounded, manipulation-aware representations.</p>
+          </li>
+          <li class="feature-card">
+            <h3><span>Stage 3</span> Action-head training</h3>
+            <p>The VLM is frozen and the flow-matching action head is trained in isolation to generate continuous 13-dimensional action chunks from stable latent features.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Data and Auxiliary Labels section temporarily hidden.
+    <section class="site-section section section--muted" aria-labelledby="dataset-title">
+      <div class="media-container">
+        <h2 id="dataset-title" class="section-title">Data and Auxiliary Labels</h2>
+        <div class="content-container prose">
+          <p>
+            We extend the ManiSkill-HAB demonstration pipeline with auxiliary annotations across three long-horizon household tasks: <strong>TidyHouse</strong>, <strong>PrepareGroceries</strong>, and <strong>SetTable</strong>. Together they cover four manipulation primitives—Pick, Place, Open, and Close—at varying levels of object and receptacle difficulty.
+          </p>
+          <p>
+            Global position, grasp state, and joint-position supervision use the complete SetTable subset (8K episodes, 240K transitions). Target-object segmentation and pose use pick-and-place data from all three tasks (40K episodes, 1.2M transitions).
+          </p>
+        </div>
+
+        <div class="segmentation-grid">
+          <figure class="figure-panel segmentation-example">
+            <div class="segmentation-labels" aria-hidden="true"><span>RGB Image</span><span>Segmentation Mask</span><span>Target Object Mask</span></div>
+            <img src="static/images/head-segmentation.png" width="1161" height="362" loading="lazy" alt="Head-camera RGB observation, instance segmentation, and binary target-object mask shown side by side.">
+            <figcaption class="figure-caption"><strong>Head camera.</strong> A global view of the manipulation scene.</figcaption>
+          </figure>
+          <figure class="figure-panel segmentation-example">
+            <div class="segmentation-labels" aria-hidden="true"><span>RGB Image</span><span>Segmentation Mask</span><span>Target Object Mask</span></div>
+            <img src="static/images/hand-segmentation.png" width="1161" height="362" loading="lazy" alt="Hand-camera RGB observation, instance segmentation, and binary target-object mask shown side by side.">
+            <figcaption class="figure-caption"><strong>Hand camera.</strong> A close-up view of the manipulation area.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+    -->
+
+    <section class="site-section section" aria-labelledby="experiments-title">
+      <div class="media-container">
+        <h2 id="experiments-title" class="section-title">Experiments</h2>
+        <div class="content-container prose results-summary">
+          <p>Richer input modalities raise OpenVLA from <strong>0.04</strong> to <strong>0.32</strong> average success, and the compact base VLM reaches <strong>0.60</strong>. Naive auxiliary co-training falls to <strong>0.51</strong>, whereas progressive training reaches <strong>0.73</strong>. On cross-task Pick and Place evaluation, segmentation and object-pose reconstruction improve the average from <strong>0.27</strong> to <strong>0.47</strong>. All values below are success rates. <strong>Bold</strong> denotes the best result in a comparison; <u>underlining</u> denotes the second best.</p>
+        </div>
+
+        <article class="results-block" aria-labelledby="table-input-title">
+          <h3 id="table-input-title">Input modalities</h3>
+          <div class="table-container" tabindex="0" role="region" aria-label="Scrollable input modality results table">
+            <table class="results-table">
+              <caption>Performance comparison between models using different input modalities.</caption>
+              <thead>
+                <tr><th scope="col" rowspan="2">Method</th><th scope="col">Pick</th><th scope="col">Place</th><th scope="colgroup" colspan="2">Open</th><th scope="colgroup" colspan="2">Close</th><th scope="col" rowspan="2">Avg. ↑</th></tr>
+                <tr><th scope="col">All Obj. ↑</th><th scope="col">All Obj. ↑</th><th scope="col">Fridge ↑</th><th scope="col">Drawer ↑</th><th scope="col">Fridge ↑</th><th scope="col">Drawer ↑</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">OpenVLA</th><td>0.00</td><td>0.19</td><td>0.02</td><td>0.00</td><td>0.00</td><td>0.04</td><td>0.04</td></tr>
+                <tr><th scope="row">+ Multiview</th><td>0.06</td><td>0.35</td><td>0.14</td><td>0.38</td><td>0.00</td><td>0.53</td><td>0.24</td></tr>
+                <tr><th scope="row">+ Multiview + Depth</th><td>0.12</td><td>0.41</td><td>0.43</td><td>0.30</td><td>0.00</td><td>0.67</td><td>0.32</td></tr>
+                <tr class="group-start"><th scope="row">Base VLM + Multiview</th><td>0.06</td><td>0.53</td><td>0.60</td><td>0.30</td><td>0.63</td><td>0.93</td><td>0.52</td></tr>
+                <tr><th scope="row">+ Multiview + Depth</th><td><strong>0.16</strong></td><td><strong>0.56</strong></td><td><strong>0.67</strong></td><td>0.36</td><td><strong>0.83</strong></td><td><strong>1.00</strong></td><td><strong>0.60</strong></td></tr>
+                <tr><th scope="row">+ Multiview + Depth + History</th><td>0.00</td><td>0.47</td><td>0.57</td><td><strong>0.40</strong></td><td>0.47</td><td><strong>1.00</strong></td><td>0.49</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="results-block" aria-labelledby="table-aux-title">
+          <h3 id="table-aux-title">Auxiliary tasks and progressive training</h3>
+          <div class="table-container" tabindex="0" role="region" aria-label="Scrollable auxiliary training results table">
+            <table class="results-table">
+              <caption>Ablation of auxiliary objectives and progressive training on SetTable.</caption>
+              <thead>
+                <tr><th scope="col" rowspan="2">Progressive</th><th scope="col" rowspan="2">Method</th><th scope="col">Pick</th><th scope="col">Place</th><th scope="colgroup" colspan="2">Open</th><th scope="colgroup" colspan="2">Close</th><th scope="col" rowspan="2">Avg. S.R. ↑</th></tr>
+                <tr><th scope="col">All Obj. ↑</th><th scope="col">All Obj. ↑</th><th scope="col">Fridge ↑</th><th scope="col">Drawer ↑</th><th scope="col">Fridge ↑</th><th scope="col">Drawer ↑</th></tr>
+              </thead>
+              <tbody>
+                <tr><td rowspan="2">No</td><th scope="row">SG-VLA</th><td>0.16</td><td>0.56</td><td>0.67</td><td>0.36</td><td>0.83</td><td>1.00</td><td>0.60</td></tr>
+                <tr><th scope="row">+ all</th><td>0.03</td><td>0.50</td><td>0.60</td><td>0.23</td><td>0.67</td><td>1.00</td><td>0.51</td></tr>
+                <tr class="group-start"><td rowspan="4">Yes</td><th scope="row">+ is_grasped</th><td><strong>0.30</strong></td><td>0.53</td><td>0.83</td><td>0.57</td><td>0.80</td><td><u>0.93</u></td><td>0.66</td></tr>
+                <tr><th scope="row">+ qpos</th><td><u>0.23</u></td><td><u>0.67</u></td><td><u>0.87</u></td><td><u>0.70</u></td><td><u>0.90</u></td><td>0.90</td><td><u>0.71</u></td></tr>
+                <tr><th scope="row">+ global pos</th><td>0.07</td><td>0.27</td><td><strong>0.90</strong></td><td><u>0.70</u></td><td><strong>0.97</strong></td><td><strong>1.00</strong></td><td>0.65</td></tr>
+                <tr><th scope="row">+ all</th><td>0.13</td><td><strong>0.70</strong></td><td><u>0.87</u></td><td><strong>0.77</strong></td><td><u>0.90</u></td><td><strong>1.00</strong></td><td><strong>0.73</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="table-note">“+ all” includes is_grasped, qpos, and global position.</p>
+        </article>
+
+        <article class="results-block" aria-labelledby="table-seg-title">
+          <h3 id="table-seg-title">Object-centric auxiliary supervision</h3>
+          <div class="table-container" tabindex="0" role="region" aria-label="Scrollable object-centric auxiliary results table">
+            <table class="results-table">
+              <caption>Pick and Place performance with target-object segmentation and object-pose reconstruction.</caption>
+              <thead>
+                <tr><th scope="col" rowspan="2">Method</th><th scope="colgroup" colspan="2">SetTable</th><th scope="colgroup" colspan="2">PrepareGroceries</th><th scope="colgroup" colspan="2">TidyHouse</th><th scope="col" rowspan="2">Avg. S.R. ↑</th></tr>
+                <tr><th scope="col">Pick ↑</th><th scope="col">Place ↑</th><th scope="col">Pick ↑</th><th scope="col">Place ↑</th><th scope="col">Pick ↑</th><th scope="col">Place ↑</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">SG-VLA</th><td>0.16</td><td>0.56</td><td>0.10</td><td>0.33</td><td>0.07</td><td>0.40</td><td>0.27</td></tr>
+                <tr><th scope="row">+ seg + obj_pos</th><td><strong>0.26</strong></td><td><strong>0.78</strong></td><td><strong>0.13</strong></td><td><strong>0.60</strong></td><td><strong>0.33</strong></td><td><strong>0.73</strong></td><td><strong>0.47</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="results-block" aria-labelledby="table-action-title">
+          <h3 id="table-action-title">Flow-matching action head</h3>
+          <div class="table-container" tabindex="0" role="region" aria-label="Scrollable action-head results table">
+            <table class="results-table">
+              <caption>Performance with and without the optional flow-matching action head.</caption>
+              <thead>
+                <tr><th scope="col" rowspan="2">Method</th><th scope="col">Pick</th><th scope="col">Place</th><th scope="colgroup" colspan="2">Open</th><th scope="colgroup" colspan="2">Close</th><th scope="col" rowspan="2">Avg. ↑</th></tr>
+                <tr><th scope="col">All Obj. ↑</th><th scope="col">All Obj. ↑</th><th scope="col">Fridge ↑</th><th scope="col">Drawer ↑</th><th scope="col">Fridge ↑</th><th scope="col">Drawer ↑</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">SG-VLA</th><td>0.13</td><td>0.70</td><td><strong>0.87</strong></td><td><strong>0.77</strong></td><td><strong>0.90</strong></td><td><strong>1.00</strong></td><td><strong>0.73</strong></td></tr>
+                <tr><th scope="row">SG-VLA + action head</th><td><strong>0.27</strong></td><td><strong>0.80</strong></td><td>0.76</td><td>0.60</td><td>0.76</td><td>0.97</td><td>0.69</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="table-note">The action head improves Pick and Place, but lowers overall average success from 0.73 to 0.69, indicating a task-dependent tradeoff.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="site-section section section--muted" aria-labelledby="rollouts-title">
+      <div class="media-container">
+        <h2 id="rollouts-title" class="section-title">Simulation Rollouts</h2>
+        <div class="video-grid">
+          <figure class="video-card"><video muted loop playsinline controls preload="metadata" poster="static/images/video-posters/pick.webp" data-autoplay aria-label="Pick simulation rollout"><source src="static/videos/pick.mp4" type="video/mp4">Your browser does not support embedded video.</video><figcaption>Pick</figcaption></figure>
+          <figure class="video-card"><video muted loop playsinline controls preload="metadata" poster="static/images/video-posters/place.webp" data-autoplay aria-label="Place simulation rollout"><source src="static/videos/place.mp4" type="video/mp4">Your browser does not support embedded video.</video><figcaption>Place</figcaption></figure>
+          <figure class="video-card"><video muted loop playsinline controls preload="metadata" poster="static/images/video-posters/open-fridge.webp" data-autoplay aria-label="Open Fridge simulation rollout"><source src="static/videos/open-fridge.mp4" type="video/mp4">Your browser does not support embedded video.</video><figcaption>Open Fridge</figcaption></figure>
+          <figure class="video-card"><video muted loop playsinline controls preload="metadata" poster="static/images/video-posters/close-fridge.webp" data-autoplay aria-label="Close Fridge simulation rollout"><source src="static/videos/close-fridge.mp4" type="video/mp4">Your browser does not support embedded video.</video><figcaption>Close Fridge</figcaption></figure>
+          <figure class="video-card"><video muted loop playsinline controls preload="metadata" poster="static/images/video-posters/open-kitchen-counter.webp" data-autoplay aria-label="Open Kitchen Counter drawer simulation rollout"><source src="static/videos/open-kitchen-counter.mp4" type="video/mp4">Your browser does not support embedded video.</video><figcaption>Open Kitchen Counter</figcaption></figure>
+          <figure class="video-card"><video muted loop playsinline controls preload="metadata" poster="static/images/video-posters/close-kitchen-counter.webp" data-autoplay aria-label="Close Kitchen Counter drawer simulation rollout"><source src="static/videos/close-kitchen-counter.mp4" type="video/mp4">Your browser does not support embedded video.</video><figcaption>Close Kitchen Counter</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section section" aria-labelledby="citation-title">
+      <div class="content-container">
+        <h2 id="citation-title" class="section-title">Citation</h2>
+        <p>If you find SG-VLA useful, please cite:</p>
+        <div class="citation-shell">
+          <pre id="bibtex-code"><code>@misc{tu2026sgvlalearningspatiallygroundedvisionlanguageaction,
+      title={SG-VLA: Learning Spatially-Grounded Vision-Language-Action Models for Mobile Manipulation}, 
+      author={Ruisen Tu and Arth Shukla and Sohyun Yoo and Xuanlin Li and Junxi Li and Jianwen Xie and Hao Su and Zhuowen Tu},
+      year={2026},
+      eprint={2603.22760},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO},
+      url={https://arxiv.org/abs/2603.22760}, 
+}</code></pre>
+          <div class="citation-actions">
+            <button id="copy-bibtex" class="copy-button button" type="button" data-copy-target="#bibtex-code" aria-describedby="copy-status">Copy BibTeX</button>
+            <span id="copy-status" class="copy-status" role="status" aria-live="polite"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer section section--muted">
+    <div class="content-container">
+      <h2 class="footer-heading">Acknowledgments</h2>
+      <p>This work is supported by NSF awards IIS-2127544 and IIS-2433768. We thank Lambda, Inc. for providing compute resources for this project.</p>
+      <p class="template-credit">
+        This website follows the academic project-page style of <a href="https://openvla.github.io/" target="_blank" rel="noopener noreferrer">OpenVLA</a> and the <a href="https://github.com/nerfies/nerfies.github.io" target="_blank" rel="noopener noreferrer">Nerfies template</a>. Template source is shared under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>.
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
