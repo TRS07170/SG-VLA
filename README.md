@@ -32,7 +32,7 @@ SG-VLA processes language instructions together with multi-view RGB-depth observ
 4. 7-dimensional target-object pose
 5. Target-object segmentation
 
-Each 13-dimensional robot action controls a 3D base-pose delta, torso height, seven arm joints, and two gripper dimensions. The strongest input configuration uses multi-view RGB and depth without action history; the study also evaluates temporal context from the four previous actions.
+Each 13-dimensional robot action specifies delta joint positions for seven arm joints, head pan and tilt, and torso lift, plus a gripper open/close scalar and mobile-base forward and yaw/angular velocities. The strongest input configuration uses multi-view RGB and depth without action history; the study also evaluates temporal context from the four previous actions.
 
 ## Progressive Training
 
